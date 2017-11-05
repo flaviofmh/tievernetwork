@@ -29,7 +29,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.google.gson.Gson;
 
+import br.com.network.tiever.entidade.Convite;
 import br.com.network.tiever.entidade.Usuario;
+import br.com.network.tiever.repository.ConviteRepository;
 import br.com.network.tiever.repository.UsuarioRepository;
 
 @RunWith(SpringRunner.class)
@@ -40,74 +42,70 @@ public class UsuarioServiceTeste {
 	@Autowired
 	private UsuarioRepository repository;
 	
+	@Autowired
+	private ConviteRepository conviteRepository;
+
 	@LocalServerPort
-    private int port;
-	
+	private int port;
+
 	@Autowired
-    private MockMvc mockMvc;
-	
+	private MockMvc mockMvc;
+
 	private HttpMessageConverter mappingJackson2HttpMessageConverter;
-	
+
 	@Autowired
-    void setConverters(HttpMessageConverter<?>[] converters) {
+	void setConverters(HttpMessageConverter<?>[] converters) {
 
-        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream()
-            .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
-            .findAny()
-            .orElse(null);
+		this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream()
+				.filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
+				.findAny()
+				.orElse(null);
 
-        assertNotNull("the JSON message converter must not be null",
-                this.mappingJackson2HttpMessageConverter);
-    }
-	
+		assertNotNull("the JSON message converter must not be null",
+				this.mappingJackson2HttpMessageConverter);
+	}
+
 	@Test
 	public void clienteRepositoryNotNull() {
 		assertThat(repository).isNotNull();
 	}
-	
+
 	@Test
-    public void testarSalvarUsuario() throws Exception {
+	public void testarSalvarUsuario() throws Exception {
 		String usuarioJson = json(new Usuario(UUID.randomUUID().toString(), new Date()));
-        this.mockMvc.perform(post("/usuario").contentType(MediaType.APPLICATION_JSON).content(usuarioJson)).andDo(print()).andExpect(status().isCreated());
-    }
-	
+		this.mockMvc.perform(post("/usuario").contentType(MediaType.APPLICATION_JSON).content(usuarioJson)).andDo(print()).andExpect(status().isCreated());
+	}
+
 	@Test
-    public void buscarTodosUsuariosCadastrados() throws Exception {
-        this.mockMvc.perform(get("/usuario")).andDo(print()).andExpect(status().isOk());
-    }
-	
+	public void buscarTodosUsuariosCadastrados() throws Exception {
+		this.mockMvc.perform(get("/usuario")).andDo(print()).andExpect(status().isOk());
+	}
+
 	@Test
-    public void testarAtualizarUsuario() throws Exception {
-		Gson gson = new Gson();
+	public void testarAtualizarUsuario() throws Exception {
 		Usuario usuarioCarregado = repository.findOne(1L);
 		usuarioCarregado.setNome(UUID.randomUUID().toString());
-		String usuarioJson = gson.toJson(usuarioCarregado);
-        this.mockMvc.perform(put("/usuario").contentType(MediaType.APPLICATION_JSON).content(usuarioJson)).andDo(print()).andExpect(status().isOk());
-    }
-	
+		String usuarioJson = json(usuarioCarregado);
+		this.mockMvc.perform(put("/usuario/{idUsuario}", usuarioCarregado.getId()).contentType(MediaType.APPLICATION_JSON).content(usuarioJson)).andDo(print()).andExpect(status().isOk());
+	}
+
 	@Test
-    public void testarExcluirUsuario() throws Exception {
-        this.mockMvc.perform(delete("/usuario/{idUsuario}", 4L)).andDo(print()).andExpect(status().isOk());
-    }
-	
+	public void testarExcluirUsuario() throws Exception {
+		this.mockMvc.perform(delete("/usuario/{idUsuario}", 4L)).andDo(print()).andExpect(status().isOk());
+	}
+
 	@Test
-    public void adicionarAmigos() throws Exception {
-		Gson gson = new Gson();
-		Usuario usuarioCarregado = repository.findOne(1L);
-		{
-			List<Usuario> amigos = new ArrayList<Usuario>();
-			amigos.add(repository.findOne(4L));
-			amigos.add(repository.findOne(5L));
-//			usuarioCarregado.setAmigosDe(amigos);
-		}
-		String usuarioJson = gson.toJson(usuarioCarregado);
-        this.mockMvc.perform(put("/usuario").contentType(MediaType.APPLICATION_JSON).content(usuarioJson)).andDo(print()).andExpect(status().isOk());
-    }
-	
+	public void aceitarConviteTeste() throws Exception {
+		Usuario usuario = repository.findOne(2L);
+		List<Convite> convites = conviteRepository.findByUsuarioDe(usuario);
+		Convite convite = convites.get(0);
+		this.mockMvc.perform(put("/usuario/addamigos").param("idConvite", convite.getId().toString())).andDo(print()).andExpect(status().isOk());
+	}
+
 	protected String json(Object o) throws IOException {
-        MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
-        this.mappingJackson2HttpMessageConverter.write(o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
-        return mockHttpOutputMessage.getBodyAsString();
-    }
-	
+		MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
+		this.mappingJackson2HttpMessageConverter.write(o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
+		return mockHttpOutputMessage.getBodyAsString();
+	}
+
 }
