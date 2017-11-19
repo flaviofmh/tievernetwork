@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> 
+<html lang="en" class="body-full-height" ng-app="tiever"> <!--<![endif]-->
+    <head>        
+        <title>Joli Admin - Responsive Bootstrap Admin Template</title>            
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        
+        <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css"/>
+        <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-3.5.0.min.js"></script>
+    </head>
+    <body ng-controller="RegisterCtrl">
+        
+        <div class="login-container lightmode">
+        	
+           	<form name="usuarioLoginForm" ng-submit="registrar(usuarioLoginForm.$valid)" role="form">
+	            <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+	            	<li class="xn-icon-button pull-right">
+                        <div class="col-md-12">
+                            <button type="submit" ng-disabled="usuarioLoginForm.$invalid" class="btn btn-info btn-block">Log In</button>
+                        </div>
+	                </li>
+	                <li class="xn-icon-button pull-right">
+                        <div class="col-md-12">
+                            <input type="password" ng-model="usuarioLogin.password" class="form-control" placeholder="Password"/>
+                        </div>
+	                </li>
+	                <li class="xn-icon-button pull-right">
+                        <div class="col-md-12">
+                            <input type="email" ng-model="usuarioLogin.email" class="form-control" placeholder="E-mail"/>
+                        </div>
+	                </li>
+	                <li class="xn-icon-button pull-right">
+		                <div class="form-group">
+	                        <div class="col-md-6">
+	                            <a href="#" class="btn">Forgot your password?</a>
+	                        </div>
+	                    </div>
+	               	</li>
+	            </ul>
+            </form>
+        
+            <div class="login-box animated fadeInDown">
+                <div class="login-logo"></div>
+                <div class="login-body">
+                    <div class="login-title"><strong>Create</strong> your account</div>
+                    <form name="usuarioForm" ng-submit="registrar(usuarioForm.$valid)" class="form-horizontal" method="post">
+	                    <div class="form-group">
+	                        <div class="col-md-12">
+	                            <input type="text" ng-model="usuario.nome" required class="form-control" placeholder="Name"/>
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <div class="col-md-12">
+	                            <input type="email" ng-model="usuario.email" required class="form-control" placeholder="E-mail"/>
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <div class="col-md-12">
+	                            <input type="password" ng-model="usuario.password" required class="form-control" placeholder="Password"/>
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <div class="col-md-12">
+	                            <input type="password" ng-model="usuario.passwordConfirmed" required class="form-control" placeholder="Password Again"/>
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <div class="col-md-6">
+	                            <button type="submit" ng-disabled="usuarioForm.$invalid" class="btn btn-info btn-block">Create</button>
+	                        </div>
+	                    </div>
+	                    <div class="login-or">OR</div>
+	                    <div class="form-group">
+	                        <div class="col-md-4">
+	                            <button class="btn btn-info btn-block btn-twitter"><span class="fa fa-twitter"></span> Twitter</button>
+	                        </div>
+	                        <div class="col-md-4">
+	                            <button class="btn btn-info btn-block btn-facebook"><span class="fa fa-facebook"></span> Facebook</button>
+	                        </div>
+	                        <div class="col-md-4">                            
+	                            <button class="btn btn-info btn-block btn-google"><span class="fa fa-google-plus"></span> Google</button>
+	                        </div>
+	                    </div>
+                    </form>
+                </div>
+                <div class="login-footer">
+                    <div class="pull-left">
+                        &copy; 2017 Tiever
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular-route/angular-route.min.js"></script>
+        <script src="app.js"></script>
+        <script src="index.js"></script>
+        <script src="register/register.js"></script>
+    </body>
+</html>
+
+
+
+
+
+

@@ -3,6 +3,7 @@ package br.com.network.tiever.rests;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,9 @@ public class UsuarioService {
 	@Autowired
 	private ConviteRepository conviteRepository;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<?> buscarTodosUsuarios() {
 		try {
@@ -38,6 +42,7 @@ public class UsuarioService {
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<?> inserirUsuario(@RequestBody Usuario usuario) {
 		try {
+			usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 			return new ResponseEntity<>(repository.save(usuario), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

@@ -16,6 +16,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -33,6 +36,16 @@ public class Usuario implements Serializable {
 	
 	@Temporal(TemporalType.DATE)
 	private Date dataNascimento;
+	
+	@NotBlank
+	private String password;
+	
+	@Transient
+	private String passwordConfirmed;
+	
+	
+	@NotBlank
+	private String email;
 	
 	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.REFRESH)
 	@JoinTable(name="usuario_amigos",
@@ -82,6 +95,30 @@ public class Usuario implements Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getPasswordConfirmed() {
+		return passwordConfirmed;
+	}
+
+	public void setPasswordConfirmed(String passwordConfirmed) {
+		this.passwordConfirmed = passwordConfirmed;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public List<Usuario> getAmigos() {
 		return amigos;
 	}
@@ -103,6 +140,7 @@ public class Usuario implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((dataNascimento == null) ? 0 : dataNascimento.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		return result;
@@ -121,6 +159,11 @@ public class Usuario implements Serializable {
 			if (other.dataNascimento != null)
 				return false;
 		} else if (!dataNascimento.equals(other.dataNascimento))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
 			return false;
 		if (id == null) {
 			if (other.id != null)
