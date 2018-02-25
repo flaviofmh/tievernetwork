@@ -25,49 +25,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	.authorizeRequests()
     	.antMatchers("/register**").permitAll()
     	.antMatchers(HttpMethod.POST, "/usuario").permitAll()
-    	.antMatchers("/css/**", "/js/**", "/img/**", "/bower_components/**", "/app.js", "/register/**", "/assets/**", "/index**").permitAll()
+    	.antMatchers("/css/**", "/js/**", "/img/**", "/bower_components/**", "/app.js", "/register/**", "/login/**", "/assets/**", "/index**").permitAll()
     	.anyRequest().authenticated()
     	.and()
     	// We filter the api/login requests
-    	.addFilterBefore(new JWTLoginFilter("/register", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+    	.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
     	// And filter other requests to check the presence of JWT in header
     	.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
-    
-//    http.csrf().disable() // disable csrf for our requests.
-//	.authorizeRequests()
-//	.antMatchers("/register**").permitAll()
-//	.anyRequest().authenticated()
-//	.and()
-//	.formLogin()
-//	.and()
-//	// We filter the api/login requests
-//	.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-//	// And filter other requests to check the presence of JWT in header
-//	.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-    
-    // Esse aqui deu certin ein =D
-//    http.csrf().disable() // disable csrf for our requests.
-//	.authorizeRequests()
-//	.antMatchers("/register**").permitAll()
-//	.antMatchers("/css/**", "/js/**", "/img/**", "/bower_components/**", "/app.js", "/register/**", "/assets/**", "/index**")
-//    .permitAll()
-//	.anyRequest().authenticated()
-//	.and()
-//	// We filter the api/login requests
-//	.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-//	// And filter other requests to check the presence of JWT in header
-//	.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-    
-//    http
-//	.authorizeRequests()
-//		.anyRequest().authenticated()
-//		.and()
-//	.formLogin()
-//		.loginPage("/register/register.html")
-//		.permitAll()
-//		.and()
-//	.logout();
 
 }

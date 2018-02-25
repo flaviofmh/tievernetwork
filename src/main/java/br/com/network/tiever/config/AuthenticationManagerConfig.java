@@ -20,8 +20,8 @@ public class AuthenticationManagerConfig extends GlobalAuthenticationConfigurerA
     public void init(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)//Overwriting default spring config because I dont need authorities or enabled field
         .passwordEncoder(passwordEncoder())
-        .usersByUsernameQuery("select username, password, 'true' from user u where u.username = ?")
-        .authoritiesByUsernameQuery("select username, 'ADMIN' from user u where u.username = ?");
+        .usersByUsernameQuery("select username, password, 'true' from user_sec u where u.username = ?")
+        .authoritiesByUsernameQuery("select username, 'ADMIN' from user_sec u where u.username = ?");
     }
     
     @Bean

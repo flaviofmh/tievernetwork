@@ -43,6 +43,7 @@ public class UsuarioService {
 	public ResponseEntity<?> inserirUsuario(@RequestBody Usuario usuario) {
 		try {
 			usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+			usuario.setUsername(usuario.getEmail());
 			return new ResponseEntity<>(repository.save(usuario), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

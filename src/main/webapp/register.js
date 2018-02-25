@@ -2,10 +2,20 @@
 
 angular.module('tiever.register', ['ngRoute'])
 
-.controller('RegisterCtrl', function($scope, $http) {
+.config(['$routeProvider', function($routeProvider) {
+  $routeProvider.when('/register', {
+    templateUrl: 'register.html',
+    controller: 'RegisterCtrl'
+  });
+}])
+
+.controller('RegisterCtrl', function($scope, $http, $location, $window, app) {
 
 	$scope.usuario = {};
-	$scope.usuarioLogin = {};
+	$scope.user = {
+			username: '',
+			password: ''
+		}
 	
 	$scope.registrar = function() {
 		var verboMetodo = 'POST';
@@ -14,7 +24,7 @@ angular.module('tiever.register', ['ngRoute'])
 		}
 		$http({
 			  method: verboMetodo,
-			  url: "http://localhost:8080/usuario",
+			  url: app.domain + "/usuario",
 			  data: $scope.usuario
 			}).then(function successCallback(response) {
 			    $scope.mensagem = 'Dados Enviados Com Sucesso';
@@ -23,5 +33,19 @@ angular.module('tiever.register', ['ngRoute'])
 				$scope.mensagemerror = response;
 			});
 	};
+	
+	$scope.login = function(valid) {
+		if (valid) {
+			$http.post(app.domain + "/login", $scope.user)
+		    .then(function(response) {
+		    	var header = response.headers();
+		        sessionStorage.setItem("token", header['authorization']); 		        
+		        delete $scope.user;
+		    	$window.location.reload();
+		    });
+		    
+		}
+	}
+	
 	
 });

@@ -43,6 +43,7 @@ public class Usuario implements Serializable {
 	@Transient
 	private String passwordConfirmed;
 	
+	private String username;
 	
 	@NotBlank
 	private String email;
@@ -119,6 +120,14 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public List<Usuario> getAmigos() {
 		return amigos;
 	}
@@ -174,6 +183,11 @@ public class Usuario implements Serializable {
 			if (other.nome != null)
 				return false;
 		} else if (!nome.equals(other.nome))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
 			return false;
 		return true;
 	}
